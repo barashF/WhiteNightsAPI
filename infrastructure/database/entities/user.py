@@ -1,5 +1,7 @@
 from sqlalchemy import Column, String, Text, Boolean
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from typing import List
+
 from .base import Base
 
 
@@ -14,4 +16,7 @@ class User(Base):
     is_email_verified: Mapped[bool] = mapped_column(Boolean, default=False)
     is_superuser: Mapped[bool] = mapped_column(Boolean, default=False)
 
-
+    owned_places: Mapped[List["Place"]] = relationship(
+        "Place",
+        back_populates="owner",
+    )

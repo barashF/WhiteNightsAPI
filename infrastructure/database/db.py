@@ -8,7 +8,7 @@ from sqlalchemy import orm
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-from entities.base import Base
+from infrastructure.database.entities.base import Base
 
 config = load_config('/home/vitaly/Рабочий стол/WhiteNights/.env_test')
 

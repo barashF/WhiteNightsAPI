@@ -7,6 +7,7 @@ from alembic import context
 
 from infrastructure.database.entities.base import Base
 from infrastructure.database.entities.user import User
+from infrastructure.database.entities.place import Place
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config

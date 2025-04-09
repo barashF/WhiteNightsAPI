@@ -1,8 +1,10 @@
 from fastapi import FastAPI
 
+from application.middlewares.exception_middleware import ExceptionMiddleware
+from application.routers import user
 
 def _init_routers(app: FastAPI):
-    pass
+    app.include_router(user.router)
 
 
 def create_app():
@@ -11,5 +13,5 @@ def create_app():
         docs_url='/api/swagger'
     )
     _init_routers(app)
-
+    app.add_middleware(ExceptionMiddleware)
     return app
