@@ -12,3 +12,11 @@ class IUserRepository(ABC):
     @abstractmethod
     async def get(self, id: int) -> Optional[UserInDB]:
         pass
+
+    @abstractmethod
+    async def get_user_by_email(self, email) -> Optional[UserCreate]:
+        pass
+
+    @abstractmethod
+    async def verify_password(self, password, hashed_password):
+        pass

@@ -1,10 +1,15 @@
 from dataclasses import dataclass
+
 from environs import Env
 
 
 @dataclass
 class DataBaseConfig:
-    database_url: str
+    database_user: str
+    database_password: str
+    database_host: str
+    database_port: int
+    database_name: str
 
 
 @dataclass
@@ -31,10 +36,20 @@ class Config:
 def load_config(path: str = None) -> Config:
     env = Env()
     env.read_env(path)
-    
+
     return Config(
-        db=DataBaseConfig(database_url=env('DATABASE_URL')),
-        app=App(host=env('HOST'), port=int(env('PORT'))),
-        auth=Auth(secret_key=env('SECRET_KEY'), algorithm=env('ALGORITHM'), token_expire=env('TOKEN')),
-        debug=env.bool('DEBUG', default=False)
+        db=DataBaseConfig(
+            database_user=env("DB_USER"),
+            database_password=env("DB_PASSWORD"),
+            database_host=env("DB_HOST"),
+            database_port=env("DB_PORT"),
+            database_name=env("DB_NAME"),
+        ),
+        app=App(host=env("HOST"), port=int(env("PORT"))),
+        auth=Auth(
+            secret_key=env("SECRET_KEY"),
+            algorithm=env("ALGORITHM"),
+            token_expire=env("TOKEN"),
+        ),
+        debug=env.bool("DEBUG", default=False),
     )

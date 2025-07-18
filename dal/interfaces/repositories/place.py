@@ -1,7 +1,7 @@
-from abc import ABС, abstractmethod
-from typing import List, Optional
+from abc import ABC, abstractmethod
+from typing import Optional
 
-from dal.models.place import Place
+from dal.models.place import Place, PlaceInDB
 
 
 class IPlaceRepository(ABC):
@@ -10,6 +10,5 @@ class IPlaceRepository(ABC):
         pass
 
     @abstractmethod
-    async def get_place_by_name(self, name: str) -> Optional[Place]:
+    async def get_place_by_name(self, name: str) -> Optional[PlaceInDB]:
         pass
-

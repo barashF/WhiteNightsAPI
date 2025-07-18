@@ -1,9 +1,8 @@
-from configuration.logger import setup_logger
-
-from fastapi import FastAPI, Request, Depends
+from fastapi import FastAPI, Request
 from fastapi.responses import JSONResponse
 from starlette.exceptions import HTTPException as StarletteHTTPException
-from logging import Logger
+
+from configuration.logger import setup_logger
 
 
 class ExceptionMiddleware:
@@ -16,7 +15,7 @@ class ExceptionMiddleware:
             await self.app(scope, receive, send)
             return
 
-        request = Request(scope, receive)
+        Request(scope, receive)
         try:
             await self.app(scope, receive, send)
         except StarletteHTTPException as exc:

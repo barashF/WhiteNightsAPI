@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  whitenights:
+    container_name: whitenights
+    build:
+      context: .
+    command:  bash -c "alembic upgrade head && python main.py"
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+  
+  db:
+    image: postgres:16
+    container_name: db_whitenights
+    ports:
+    - 5432:5432
+    environment:
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
+    env_file:
+      - .env

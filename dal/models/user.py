@@ -1,7 +1,7 @@
 from datetime import datetime
-from uuid import UUID
-from typing import Optional, List
-from pydantic import BaseModel, EmailStr, Field, ConfigDict
+from typing import Optional
+
+from pydantic import BaseModel, ConfigDict, EmailStr, Field
 
 
 class UserBase(BaseModel):
@@ -13,9 +13,14 @@ class UserBase(BaseModel):
     email: EmailStr = Field(..., max_length=80)
 
 
+class UserLogin(BaseModel):
+    email: str
+    password: str
+
+
 class UserCreate(UserBase):
     password: str = Field(..., min_length=8, max_length=255)
-    
+
 
 class UserUpdate(BaseModel):
     first_name: Optional[str] = Field(None, max_length=50)
@@ -27,13 +32,12 @@ class UserUpdate(BaseModel):
 
 
 class UserInDB(UserBase):
-    id: UUID
+    id: int
     avatar: Optional[str] = None
     bio: Optional[str] = None
     is_email_verified: bool = False
     is_superuser: bool = False
     created_at: datetime
-
 
     model_config = ConfigDict(
         from_attributes=True,
@@ -48,7 +52,11 @@ class UserInDB(UserBase):
                 "bio": "Люблю бухать",
                 "is_email_verified": True,
                 "is_superuser": False,
-                "created_at": "2023-01-01T00:00:00"
+                "created_at": "2023-01-01T00:00:00",
             }
-        }
+        },
     )
+
+
+class UserAuth(UserInDB):
+    password: str
