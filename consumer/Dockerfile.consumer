@@ -1,0 +1,15 @@
+FROM python:3.12
+
+WORKDIR /app
+
+COPY ./configuration /app/configuration
+COPY ./consumer/consumer.py /app/consumer.py
+COPY .env /app/.env
+COPY wait-for-rabbitmq.sh /app/wait-for-rabbitmq.sh
+
+RUN chmod +x /app/wait-for-rabbitmq.sh
+RUN apt-get update && apt-get install -y netcat-openbsd
+RUN pip install aio_pika
+RUN pip install environs
+
+CMD ["python", "consumer.py"]

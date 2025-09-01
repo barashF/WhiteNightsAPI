@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from fastapi import APIRouter, Depends
 
-from application.di import get_registration_facade, get_user_repository
+from application.di import get_producer, get_registration_facade, get_user_repository
 from dal.models.token import Token
 from dal.models.user import UserCreate, UserInDB, UserLogin
 from infrastructure.repositories.user import UserRepository
@@ -42,3 +42,8 @@ async def test(current_user=Depends(get_current_user)):
 @router.get("/get_user/{user_id}", summary="юзер по id")
 async def get_user(user_id: int, user_repository: UserRepository = Depends(get_user_repository)) -> Optional[UserInDB]:
     return await user_repository.get(user_id)
+
+
+@router.post("/send_notification")
+async def send_notification(message: str, producer=Depends(get_producer)):
+    return await producer.send_message(message)

@@ -4,7 +4,11 @@ from fastapi import HTTPException, status
 
 from dal.interfaces.services.join_group_request import IJoinGroupRequestService
 from dal.models.group_member import SGroupMember
-from dal.models.join_group_request import JoinGroupResponse, SJoinGroupRequest, SJoinGroupRequestInDB
+from dal.models.join_group_request import (
+    JoinGroupResponse,
+    SJoinGroupRequest,
+    SJoinGroupRequestInDB,
+)
 from infrastructure.repositories.group import GroupRepository
 from infrastructure.repositories.group_member import GroupMemberRepository
 from infrastructure.repositories.join_group_request import JoinGroupRequestRepository

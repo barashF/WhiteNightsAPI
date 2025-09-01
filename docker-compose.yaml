@@ -1,15 +1,17 @@
-version: '3'
+version: '3.8'
 
 services:
   whitenights:
     container_name: whitenights
     build:
       context: .
-    command:  bash -c "alembic upgrade head && python main.py"
+    command:  bash -c "./wait-for-postgres.sh db ${DB_USER} ${DB_PASSWORD} ${DB_NAME} python main.py"
     ports:
       - 8000:8000
     depends_on:
       - db
+    networks:
+      - app_network
   
   db:
     image: postgres:16
@@ -22,3 +24,46 @@ services:
       - POSTGRES_DB=${DB_NAME}
     env_file:
       - .env
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - app_network
+  
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=${RABBIT_USER}
+      - RABBITMQ_DEFAULT_PASS=${RABBIT_PASSWORD}
+      - RABBITMQ_SERVER_ADDITIONAL_ERL_ARGS=-rabbit disk_free_limit 2147483648
+    volumes:
+      - ./rabbitmq:/var/lib/rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    networks:
+      - app_network
+  
+  consumer:
+    build:
+      context: .
+      dockerfile: consumer/Dockerfile.consumer
+    depends_on:
+      - rabbitmq
+      - whitenights
+    command: bash -c "./wait-for-rabbitmq.sh rabbitmq 5672 python consumer.py"
+    environment:
+      - RABBITMQ_HOST=${RABBIT_HOST}
+      - RABBITMQ_USER=${RABBIT_USER}
+      - RABBITMQ_PASSWORD=${RABBIT_PASSWORD}
+    networks:
+      - app_network
+    
+volumes:
+  pgdata:
+
+
+networks:
+  app_network:
+    driver: bridge

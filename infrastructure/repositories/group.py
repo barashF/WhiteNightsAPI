@@ -22,6 +22,7 @@ class GroupRepository(IGroupRepository):
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="The specified date is in the past",
             )
+        group.datetime = group.datetime.replace(tzinfo=timezone.utc)
         group_create = SGroupCreate(**group.__dict__, owner_id=user_id)
         group_entity = await self._dto_to_entity(group_create)
         self.db_context.add(group_entity)

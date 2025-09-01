@@ -11,8 +11,8 @@ from dal.models.token import Token
 from dal.models.user import UserAuth, UserCreate, UserInDB
 
 
-# config = load_config("/app/.env")
-config = load_config("/home/vitaly/Рабочий стол/WhiteNights/.env")
+config = load_config("/app/.env")
+# config = load_config("/home/vitaly/Рабочий стол/WhiteNights/.env")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/token")
 
 

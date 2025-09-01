@@ -26,10 +26,18 @@ class App:
 
 
 @dataclass
+class Broker:
+    user: str
+    password: str
+    host: str
+
+
+@dataclass
 class Config:
     db: DataBaseConfig
     app: App
     auth: Auth
+    broker: Broker
     debug: bool
 
 
@@ -50,6 +58,11 @@ def load_config(path: str = None) -> Config:
             secret_key=env("SECRET_KEY"),
             algorithm=env("ALGORITHM"),
             token_expire=env("TOKEN"),
+        ),
+        broker=Broker(
+            user=env("RABBIT_USER"),
+            password=env("RABBIT_PASSWORD"),
+            host=env("RABBIT_HOST"),
         ),
         debug=env.bool("DEBUG", default=False),
     )

@@ -16,6 +16,7 @@ from infrastructure.repositories.place import PlaceRepository
 from infrastructure.repositories.user import UserRepository
 from infrastructure.services.group_member import GroupMemberService
 from infrastructure.services.join_group_request import JoinGroupRequestService
+from infrastructure.services.producer import ProducerService
 from infrastructure.services.registration import AuthFacade, Validator
 
 
@@ -63,3 +64,7 @@ def get_registration_facade(
     validator: Validator = Depends(),
 ) -> AuthFacade:
     return AuthFacade(validator, user_repository)
+
+
+def get_producer():
+    return ProducerService()

@@ -10,8 +10,8 @@ from dal.interfaces.repositories.user import IUserRepository
 from dal.models.user import UserInDB
 
 
-# config = load_config("/app/.env")
-config = load_config("/home/vitaly/Рабочий стол/WhiteNights/.env")
+config = load_config("/app/.env")
+# config = load_config("/home/vitaly/Рабочий стол/WhiteNights/.env")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/token")
 
 

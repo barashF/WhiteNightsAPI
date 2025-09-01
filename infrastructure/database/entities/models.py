@@ -36,7 +36,7 @@ class Event(Base):
     name: Mapped[str] = mapped_column(String, nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=False)
     address: Mapped[str] = mapped_column(Text, nullable=False)
-    datetime: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    datetime: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     website: Mapped[str] = mapped_column(String(100), nullable=True)
     work_schedule: Mapped[str] = mapped_column(Text)
 
@@ -44,7 +44,7 @@ class Event(Base):
 class Group(Base):
     owner_id: Mapped[int] = mapped_column(Integer, ForeignKey("users.id", onupdate="RESTRICT"))
     owner: Mapped["User"] = relationship("User", lazy="subquery")
-    datetime: Mapped[datetime] = mapped_column(DateTime, nullable=False)
+    datetime: Mapped[datetime] = mapped_column(DateTime(timezone=True), nullable=False)
     place_id: Mapped[int] = mapped_column(Integer, ForeignKey("places.id", onupdate="RESTRICT"), nullable=True)
     place: Mapped["Place"] = relationship("Place", lazy="subquery")
     event_id: Mapped[int] = mapped_column(Integer, ForeignKey("events.id", onupdate="RESTRICT"), nullable=True)

@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, Depends
 
@@ -14,7 +14,11 @@ from dal.interfaces.services.group_member import IGroupMemberService
 from dal.interfaces.services.join_group_request import IJoinGroupRequestService
 from dal.models.group import SGroup, SGroupInDB
 from dal.models.group_member import SGroupMember
-from dal.models.join_group_request import JoinGroupResponse, SJoinGroupRequest, SJoinGroupRequestInDB
+from dal.models.join_group_request import (
+    JoinGroupResponse,
+    SJoinGroupRequest,
+    SJoinGroupRequestInDB,
+)
 from dal.models.user import UserInDB
 from infrastructure.services.auth import get_current_user
 
@@ -36,7 +40,9 @@ async def create_group(
 
 
 @router.get("/get_group/{group_id}")
-async def get_group(group_id: int, group_repository: IGroupRepository = Depends(get_group_repository)) -> SGroupInDB:
+async def get_group(
+    group_id: int, group_repository: IGroupRepository = Depends(get_group_repository)
+) -> Optional[SGroupInDB]:
     group = await group_repository.get(group_id)
     return group
 
